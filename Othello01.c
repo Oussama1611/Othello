@@ -1,4 +1,3 @@
-#include <stdio.h>
 /* Dimension du tableau */
 #define D 8
 
@@ -7,6 +6,8 @@
 #define Blanc 'B' // first player
 #define Noir 'N' // second player
 
+
+#include <stdio.h>
 /* definition d'un type de tableau */
 typedef char Table[D][D];
 
