@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <Fclearonctions.h>
+#include "Fonctions.h"
 int main()
 {
     char tableau[D][D];
