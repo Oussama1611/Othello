@@ -49,10 +49,10 @@ void aff_table(Table T)
         printf("|");
         for (j=0; j<D; j++)
            {if (T[i][j] == Blanc)
-                printf("\033[31m %c \033[0m|", T[i][j]); // Les blancs en rouge 
-            else
-                printf("\033[34m %c \033[0m|", T[i][j]);} // Les noirs en bleu 
-        printf(" %d\n+", i+1); // affichage des chiffres en colonne 
+                printf("\033[31m %c \033[0m|", T[i][j]); // Les blancs en rouge  // le code "\033[31" est consacre au rouge 
+            else                                                                 // le code "\033[0m" est pour reintialiser la couleur
+                printf("\033[34m %c \033[0m|", T[i][j]);} // Les noirs en bleu  //  le code "\033[34" est consacre au bleu
+        printf(" %d\n+", 10*(i+1)); // affichage des chiffres en colonne 
         for (j=0; j<D; j++)
             printf("---*");
         printf("\n");
