@@ -1,6 +1,4 @@
-//Les fonctions 
 #include <stdio.h>
-
 /* Dimension du tableau */
 #define D 8
 
@@ -28,7 +26,6 @@ void init_table(Table T)
     T[3][4]=Blanc;  // // Par definition du jeu
     T[4][3]=Blanc;  //
 }
-
 
 /* Affichage du Tableau */
 
@@ -60,3 +57,13 @@ void aff_table(Table T)
         printf("\n");
     }
 }
+
+
+int main()
+{
+    char tableau[D][D];
+    init_table(tableau);
+    aff_table(tableau);
+    return 0;
+}
+
