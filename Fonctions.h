@@ -1,12 +1,13 @@
 //Les fonctions 
+#include <stdio.h>
 
 /* Dimension du tableau */
 #define D 8
 
 /* Les pions a jouer */
-#define EMPTY=' '
-#define Blanc='B'
-#define Noir='N'
+#define EMPTY ' '
+#define Blanc 'B' // first player
+#define Noir 'N' // second player
 
 /* definition d'un type de tableau */
 typedef char Table[D][D];
@@ -49,7 +50,7 @@ void aff_table(Table T)
     for (i=0; i<D; i++) {
         printf("|");
         for (j=0; j<D; j++)
-           {if (T[i][j] == BLANC)
+           {if (T[i][j] == Blanc)
                 printf("\033[31m %c \033[0m|", T[i][j]); // Les blancs en rouge 
             else
                 printf("\033[34m %c \033[0m|", T[i][j]);} // Les noirs en bleu 
