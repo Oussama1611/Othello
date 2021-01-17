@@ -16,10 +16,30 @@
 typedef char Table[D][D];
 
 
+/* definition d'un boolean */
+typedef enum
+{
+    false,
+    true
+}Bool;
+
+
 
 /* Prototypes */
 void init_table(Table T);
 void aff_table(Table T);
+Bool case_valide(int ligne,int colonne);
+char inverse_coup(char coup);
+Bool valide_verticale_haut(Table T,int ligne,int colonne);
+Bool valide_verticale_bas(Table T,int ligne,int colonne);
+Bool valide_horizontale_droite(Table T,int ligne,int colonne);
+Bool valide_horizontale_gauche(Table T,int ligne,int colonne);
+Bool valide_diagonale_haut_droit(Table T,int ligne,int colonne);
+Bool valide_diagonale_haut_gauche(Table T,int ligne,int colonne);
+Bool valide_diagonale_bas_droit(Table T,int ligne,int colonne);
+Bool valide_diagonale_bas_gauche(Table T,int ligne,int colonne);
+Bool coup_valide(Table T,int ligne,int colonne);
+
 
 
 
