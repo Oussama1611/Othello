@@ -24,7 +24,7 @@ void init_table(Table T)
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /* fonction qui affiche le tableau */
-void aff_table(Table T)
+void aff_table(Table  T)
 {
     int i,j;
     
@@ -42,10 +42,7 @@ void aff_table(Table T)
     for (i=0; i<D; i++) {
         printf("|");
         for (j=0; j<D; j++)
-           {if (T[i][j] == Blanc)
                 printf(" %c |", T[i][j]); 
-            else                                                                 
-                printf(" %c |", T[i][j]);} 
         printf(" %d\n+", 10*(i+1)); // affichage des chiffres en colonne 
         for (j=0; j<D; j++)
             printf("---*");
@@ -75,12 +72,12 @@ char inverse_coup(char coup)
 Bool valide_verticale_haut(Table T,int ligne,int colonne,char coup) // le parametre coup ici sert a identifier le joueur en question 
 {
     int i=ligne-1,yes=0;                    // l'entier "yes" permet de verifier si un pion existe 
-    while(case_valide(i,colonne) && T[i][colonne]==coup)
+    while(case_valide(i,colonne) && T[i][colonne]==inverse_coup(coup))
     {
         i--;   // la recherche de l'extrimite des pions du type "coup" 
         yes=1;
     }
-    if (case_valide(i, colonne) && T[i][colonne] == inverse_coup(coup) && yes == 1) return true ;
+    if (case_valide(i, colonne) && T[i][colonne] == coup && yes == 1) return true ;
     return false;
 }
 
@@ -89,12 +86,12 @@ Bool valide_verticale_haut(Table T,int ligne,int colonne,char coup) // le parame
 Bool valide_verticale_bas(Table T,int ligne,int colonne,char coup)
 {
     int i=ligne+1,yes=0;                    // l'entier "yes" permet de verifier si un pion existe 
-    while(case_valide(i,colonne) && T[i][colonne]==coup)
+    while(case_valide(i,colonne) && T[i][colonne]==inverse_coup(coup))
     {
         i++;   // la recherche de l'extrimite des pions du type "coup"
         yes=1;
     }
-    if (case_valide(i,colonne) && T[i][colonne] == inverse_coup(coup) && yes == 1) return true ;
+    if (case_valide(i,colonne) && T[i][colonne] == coup && yes == 1) return true ;
     return false;
 }
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -102,12 +99,12 @@ Bool valide_verticale_bas(Table T,int ligne,int colonne,char coup)
 Bool valide_horizontale_droite(Table T,int ligne,int colonne,char coup)
 {
     int j=colonne + 1,yes=0;                    // l'entier "yes" permet de verifier si un pion existe 
-    while(case_valide(ligne,j) && T[ligne][j]==coup)
+    while(case_valide(ligne,j) && T[ligne][j]==inverse_coup(coup))
     {
         j++;   // la recherche de l'extrimite des pions du type "coup"
         yes=1;
     }
-    if (case_valide(ligne,j) && T[ligne][j] == inverse_coup(coup) && yes == 1) return true ;
+    if (case_valide(ligne,j) && T[ligne][j] == coup && yes == 1) return true ;
     return false;
 }
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -115,12 +112,12 @@ Bool valide_horizontale_droite(Table T,int ligne,int colonne,char coup)
 Bool valide_horizontale_gauche(Table T,int ligne,int colonne,char coup)
 {
     int j=colonne - 1,yes=0;                    // l'entier "yes" permet de verifier si un pion existe 
-    while(case_valide(ligne,j) && T[ligne][j]==coup)
+    while(case_valide(ligne,j) && T[ligne][j]==inverse_coup(coup))
     {
         j--;   // la recherche de l'extrimite des pions du type "coup"
         yes=1;
     }
-    if (case_valide(ligne,j) && T[ligne][j] == inverse_coup(coup) && yes == 1) return true ;
+    if (case_valide(ligne,j) && T[ligne][j] == coup && yes == 1) return true ;
     return false;
 }
 
@@ -129,13 +126,13 @@ Bool valide_horizontale_gauche(Table T,int ligne,int colonne,char coup)
 Bool valide_diagonale_haut_droit(Table T,int ligne,int colonne,char coup)
 {
     int i=ligne-1,j=colonne+1,yes=0;
-    while(case_valide(i,j) && T[i][j]==coup)
+    while(case_valide(i,j) && T[i][j]==inverse_coup(coup))
     {
         i--;
         j++;
         yes=1;
     }
-    if (case_valide(i,j) && T[i][j] == inverse_coup(coup) && yes == 1) return true ;
+    if (case_valide(i,j) && T[i][j] == coup && yes == 1) return true ;
     return false;
 }
 
@@ -144,13 +141,13 @@ Bool valide_diagonale_haut_droit(Table T,int ligne,int colonne,char coup)
 Bool valide_diagonale_haut_gauche(Table T,int ligne,int colonne,char coup)
 {
     int i=ligne-1,j=colonne-1,yes=0;
-    while(case_valide(i,j) && T[i][j]==coup)
+    while(case_valide(i,j) && T[i][j]==inverse_coup(coup))
     {
         i--;
         j--;
         yes=1;
     }
-    if (case_valide(i,j) && T[i][j] == inverse_coup(coup) && yes == 1) return true ;
+    if (case_valide(i,j) && T[i][j] == coup && yes == 1) return true ;
     return false;
 }
 
@@ -159,13 +156,13 @@ Bool valide_diagonale_haut_gauche(Table T,int ligne,int colonne,char coup)
 Bool valide_diagonale_bas_droit(Table T,int ligne,int colonne,char coup)
 {
     int i=ligne+1,j=colonne+1,yes=0;
-    while(case_valide(i,j) && T[i][j]==coup)
+    while(case_valide(i,j) && T[i][j]==inverse_coup(coup))
     {
         i++;
         j++;
         yes=1;
     }
-    if (case_valide(i,j) && T[i][j] == inverse_coup(coup) && yes == 1) return true ;
+    if (case_valide(i,j) && T[i][j] == coup && yes == 1) return true ;
     return false;
 }
 
@@ -174,13 +171,13 @@ Bool valide_diagonale_bas_droit(Table T,int ligne,int colonne,char coup)
 Bool valide_diagonale_bas_gauche(Table T,int ligne,int colonne,char coup)
 {
     int i=ligne+1,j=colonne-1,yes=0;
-    while(case_valide(i,j) && T[i][j]==coup)
+    while(case_valide(i,j) && T[i][j]==inverse_coup(coup))
     {
         i++;
         j--;
         yes=1;
     }
-    if (case_valide(i,j) && T[i][j] == inverse_coup(coup) && yes == 1) return true ;
+    if (case_valide(i,j) && T[i][j] == coup && yes == 1) return true ;
     return false;
 
 }
@@ -190,6 +187,7 @@ Bool valide_diagonale_bas_gauche(Table T,int ligne,int colonne,char coup)
 /* defintion d'une fonction qui verifie si un coup est valide. Fonction qui rassemble toutes les fonctions predefinies ci-dessus */
 Bool coup_valide(Table T,int ligne,int colonne,char coup)
 {
+    if (!case_valide(ligne, colonne) || T[ligne][colonne] != EMPTY) return false;
     if(valide_verticale_haut(T,ligne,colonne,coup) 
     || valide_verticale_bas(T,ligne,colonne,coup) 
     || valide_horizontale_droite(T,ligne,colonne,coup) 
@@ -230,54 +228,56 @@ void entrer_son_coup(Table T, char coup)
         scanf("%d",&n);               // qui s'agit de la somme de l'entier de la ligne et l'entier de la colonne . 
         ligne=floor(n/10)-1;              // Ex : la case (4,5) est associe a l'entier 45.
         colonne=n%10-1;
-    }while(!(n>10 && n<90 && n%10!=0));
+    }while(!(n>10 && n<90 && n%10!=0) || !coup_valide(T,ligne,colonne,coup));
+    if(coup_valide(T,ligne,colonne,coup))
+        T[ligne][colonne]=coup;
     if(valide_verticale_haut(T,ligne,colonne,coup)){
         i=ligne-1;
         while(case_valide(i,colonne) && T[i][colonne]==inverse_coup(coup)) 
             i--;
         if(case_valide(i,colonne) && T[i][colonne]==coup)
-            i=ligne-1;
+        {   i=ligne-1;
             while(T[i][colonne]==inverse_coup(coup))
             {  
                 T[i][colonne]=coup;
                 i--;
-            }    
+            } }    
     }
     if(valide_verticale_bas(T,ligne,colonne,coup)){
         i=ligne+1;
         while(case_valide(i,colonne) && T[i][colonne]==inverse_coup(coup)) 
             i++;
         if(case_valide(i,colonne) && T[i][colonne]==coup)
-            i=ligne+1;
+       {    i=ligne+1;
             while(T[i][colonne]==inverse_coup(coup))
             {
                 T[i][colonne]=coup;
                 i++;
-            }    
+            } }   
     }        
     if(valide_horizontale_droite(T,ligne,colonne,coup)) {
         j=colonne+1;
         while(case_valide(ligne,j) && T[ligne][j]==inverse_coup(coup)) 
             j++;
         if(case_valide(i,j) && T[ligne][j]==coup)
-            j=colonne+1;
+        {   j=colonne+1;
             while(T[ligne][j]==inverse_coup(coup))
             {
                 T[ligne][j]=coup;
                 j++;
-            }    
+            }  }
     }
     if(valide_horizontale_gauche(T,ligne,colonne,coup)) {
         j=colonne-1;
         while(case_valide(ligne,j) && T[ligne][j]==inverse_coup(coup)) 
             j--;
         if(case_valide(ligne,j) && T[ligne][j]==coup)
-            j=colonne-1;
+        {   j=colonne-1;
             while(T[ligne][j]==inverse_coup(coup))
             {
                 T[ligne][j]=coup;
                 j--;
-            }       
+            }  }     
     }                 
         
     if(valide_diagonale_bas_droit(T,ligne,colonne,coup)) {
@@ -288,14 +288,14 @@ void entrer_son_coup(Table T, char coup)
             j++;
         }
         if(case_valide(i,j) && T[i][j]==coup)
-            i=ligne+1;
+        {   i=ligne+1;
             j=colonne+1;
             while(T[i][j]==inverse_coup(coup))
             {
                 T[i][j]=coup;
                 i++;
                 j++;
-            }                
+            }  }              
     }
     if(valide_diagonale_bas_gauche(T,ligne,colonne,coup)) {
         i=ligne+1;
@@ -305,14 +305,14 @@ void entrer_son_coup(Table T, char coup)
             j--;
         }
         if(case_valide(i,j) && T[i][j]==coup)
-            i=ligne+1;
+        {   i=ligne+1;
             j=colonne-1;
             while(T[i][j]==inverse_coup(coup))
             {
                 T[i][j]=coup;
                 i++;
                 j--;
-            }  
+            }  }
     }            
     if(valide_diagonale_haut_droit(T,ligne,colonne,coup)) {
         i=ligne-1;
@@ -322,14 +322,14 @@ void entrer_son_coup(Table T, char coup)
             j++;
         }
         if(case_valide(i,j) && T[i][j]==coup)
-            i=ligne-1;
+        {   i=ligne-1;
             j=colonne+1;
             while(T[i][j]==inverse_coup(coup))
             {
                 T[i][j]=coup;
                 i--;
                 j++;
-            }
+            } }
     }              
     if(valide_diagonale_haut_gauche(T,ligne,colonne,coup)) {
         i=ligne-1;
@@ -339,14 +339,14 @@ void entrer_son_coup(Table T, char coup)
             j--;
         }
         if(case_valide(i,j) && T[i][j]==coup)
-            i=ligne-1;
+        {   i=ligne-1;
             j=colonne-1;
             while(T[i][j]==inverse_coup(coup))
             {
                 T[i][j]=coup;
                 i--;
                 j--;
-            }
+            } }
     }             
 
 // PS : A chaque condition "if" ci-dessus on voit est ce que le coup est valide selon chaque direction pour echanger les pions
