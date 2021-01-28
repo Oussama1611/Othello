@@ -5,6 +5,28 @@
 #include "fonctions.h"
 
 
+/* pour la sauvegarde des informations des joueurs */
+void entrer_noms_joueurs(void)
+{
+    char name[40];
+    printf("Donner votre nom (joueur des pions Blancs (B) ) : \n ");
+    gets(name);
+    strcpy(Joueur1.nom,name);
+    printf("Donner votre nom (joueur des pions Noirs (N) ) : \n ");
+    gets(name);
+    strcpy(Joueur2.nom,name);
+}
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+Ptr_Joueur nom_a_afficher(char coup)
+{
+    Ptr_Joueur Ptr;
+    if(coup==Blanc)
+        Ptr=&Joueur1;
+    else
+        Ptr=&Joueur2;
+    return Ptr;    
+}
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /* fonction qui initialise le tableau */
 void init_table(Table T)
@@ -218,16 +240,39 @@ Bool rejouer_ou_non(Table T,char coup)
 void entrer_son_coup(Table T, char coup)
 {
     int n;
+    int yes; // pour la verification de recommencement de jeu 
     int i,j;
     int ligne,colonne;
     do 
     {
-        printf("C'est le tour de joueur de pions [%c]\n",coup);
+        printf("C'est le tour de joueur : %s [%c]\n",nom_a_afficher(coup)->nom,coup);
+        printf("Entrer 0 pour recommencer ! \n");
         printf("Veuillez saisir un entier de la forme 'ij' tel que i0 est la ligne et j est la colonne associee !\n");
         printf("Entrer l'entier : \n"); // on associe a chaque case un entier unique
         scanf("%d",&n);               // qui s'agit de la somme de l'entier de la ligne et l'entier de la colonne . 
-        ligne=floor(n/10)-1;              // Ex : la case (4,5) est associe a l'entier 45.
-        colonne=n%10-1;
+        while(n==0)
+        {   
+            printf("!!!!!Est ce que cous voulez vraiement quitter cette partie ? Si oui ,enter encore 0 ! Si non enter un entier quelconque different de 0!!!!! \n");
+            scanf("%d",&yes);
+            if(yes==0)
+            {   
+                init_table(T);
+                aff_table(T);
+            }    
+            else
+            {
+                aff_table(T);
+                printf("C'est le tour de joueur : %s [%c]\n",nom_a_afficher(coup)->nom,coup);
+                printf("Veuillez saisir un entier de la forme 'ij' tel que i0 est la ligne et j est la colonne associee !\n");
+                printf("Entrer l'entier : \n");
+                scanf("%d",&n);
+            }
+        }        
+        if(n!=0)
+        {
+            ligne=floor(n/10)-1;              // Ex : la case (4,5) est associe a l'entier 45.
+            colonne=n%10-1;
+        }    
     }while(!(n>10 && n<90 && n%10!=0) || !coup_valide(T,ligne,colonne,coup));
     if(coup_valide(T,ligne,colonne,coup))
         T[ligne][colonne]=coup;
@@ -358,15 +403,27 @@ Bool partie_terminee(Table T)
     int i,j, nb_noir=0,nb_blanc=0;
     for(i=0;i<D;i++)
         for(j=0;j<D;j++)
-            if(T[i][j]==EMPTY)
+            if(T[i][j]==EMPTY && (rejouer_ou_non(T,Noir) || rejouer_ou_non(T,Blanc) ))
                 return false;
             else if(T[i][j]==Blanc) nb_blanc++;
                 else nb_noir++;
+    Joueur1.score=nb_blanc;
+    Joueur2.score=nb_noir;
     if(nb_noir<nb_blanc) 
-        printf("!!!!!! Le joueur de pions [%c] a gagne !!!!!!!!\n",Blanc);
+        printf("!!!!!! Le joueur : %s [%c] a gagne !!!!!!!!\n",Joueur1.nom,Blanc);
     else if(nb_noir>nb_blanc)
-        printf("!!!!!! Le joueur de pions [%c] a gagne !!!!!!!!\n",Noir);
+        printf("!!!!!! Le joueur : %s [%c] a gagne !!!!!!!!\n",Joueur2.nom,Noir);
          else printf("!!!!! Egalite !!!!!");
+    printf("le resultat est %s %d - %d %s \n",Joueur1.nom,Joueur1.score,Joueur2.score,Joueur2.nom );
     return true;                    
+}
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+void sauvegarde_result(void)
+{
+    FILE *fic=fopen("Sauvegarde.txt","a");
+    if(fic==NULL)
+        exit(1);
+    fprintf(fic,"%s (%d) VS %s (%d) \n",Joueur1.nom,Joueur1.score,Joueur2.nom,Joueur2.score);
+    fclose(fic);
 }
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

@@ -22,10 +22,20 @@ typedef enum
     false,
     true
 }Bool;
+/* Definition d'une fiche du joueur */
+typedef struct _Joueur
+{
+    char nom[40];
+    int score;
+}Joueur, * Ptr_Joueur;  /* le pointeur Joueur serve a voir quel nom de joueur on va ecrire dans l'affichage */ 
+                
+Joueur Joueur1,Joueur2; /* Declaration des structures des infos des joueurs  */
 
 
 
 /* Prototypes */
+void entrer_info_joueurs(void);
+Ptr_Joueur nom_a_afficher(char coup);
 void init_table(Table T);
 void aff_table(Table T);
 Bool case_valide(int ligne,int colonne);
