@@ -471,7 +471,7 @@ void Lire_trier_affi_scores(void)
         n++;
     }
     /* on commence par trier les pointeurs par les scores associes */
-    for(i=0;i<n;i++)
+    for(i=0;i<n-1;i++)
         for(j=i+1;j<n;j++)
         {
             if(liste_scores[i]->score < liste_scores[j]->score)  /* le tri s'effectue en decroissance */
