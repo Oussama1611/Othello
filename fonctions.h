@@ -22,6 +22,7 @@ typedef enum
     false,
     true
 }Bool;
+
 /* Definition d'une fiche du joueur */
 typedef struct _Joueur
 {
@@ -52,6 +53,8 @@ Bool coup_valide(Table T,int ligne,int colonne,char coup);
 Bool rejouer_ou_non(Table T,char coup);
 void entrer_son_coup(Table T, char coup);
 Bool partie_terminee(Table T);
+void enregistrer_le_gagnant(void);
+void Lire_trier_affi_scores(void);
 
 
 

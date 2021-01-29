@@ -22,6 +22,8 @@ int main(void)
             printf("Le joueur : %s [%c] passe son tour ! \n",nom_a_afficher(inverse_coup(coup))->nom,inverse_coup(coup));
     }
     sauvegarde_result();
+    enregistrer_le_gagnant();
+    Lire_trier_affi_scores();
 
     return 0;
 }

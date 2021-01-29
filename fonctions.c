@@ -9,10 +9,10 @@
 void entrer_noms_joueurs(void)
 {
     char name[40];
-    printf("Donner votre nom (joueur des pions Blancs (B) ) : \n ");
+    printf("Donner votre nom (joueur des pions Blancs (B) ) : \n");
     gets(name);
     strcpy(Joueur1.nom,name);
-    printf("Donner votre nom (joueur des pions Noirs (N) ) : \n ");
+    printf("Donner votre nom (joueur des pions Noirs (N) ) : \n");
     gets(name);
     strcpy(Joueur2.nom,name);
 }
@@ -418,12 +418,82 @@ Bool partie_terminee(Table T)
     return true;                    
 }
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* la fonction qui sert a enregistrer le resultat d'une partie dans le fichier sauvegarde.txt */
 void sauvegarde_result(void)
 {
     FILE *fic=fopen("Sauvegarde.txt","a");
     if(fic==NULL)
         exit(1);
-    fprintf(fic,"%s (%d) VS %s (%d) \n",Joueur1.nom,Joueur1.score,Joueur2.nom,Joueur2.score);
+    fprintf(fic,"%s (%d) VS %s (%d) ",Joueur1.nom,Joueur1.score,Joueur2.nom,Joueur2.score);
+    fprintf(fic,"\n");
     fclose(fic);
 }
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* la fonction qui va enregistrer le gagnant afin d'implementer la fonction qui va retourner les dix meilleurs scores */
+void enregistrer_le_gagnant(void)
+{
+    FILE *fichier=fopen("Meilleures_scores.txt","a");
+    if(fichier==NULL)
+        exit(1);
+    if(Joueur1.score<Joueur2.score)
+        fprintf(fichier,"%s %d ",Joueur2.nom,Joueur2.score);
+        fprintf(fichier,"\n");    
+    if(Joueur2.score<Joueur1.score) 
+        fprintf(fichier,"%s %d \n",Joueur1.nom,Joueur1.score);
+        fprintf(fichier,"\n");
+    fclose(fichier);
+}
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* la fonction qui lit tous les meilleures scores et fait le tri des scores puis l'affichage des dix meilleures scores*/
+void Lire_trier_affi_scores(void)
+{
+    char name[40];
+    int score;
+    char temp_char; // un charactere temporaire pour calculer le nombre des lignes dans le fichier
+    int n=0,i,j;
+    FILE *fichier=fopen("Meilleures_scores.txt","r");
+    if(fichier==NULL)
+        exit(1);
+    while(1)
+    {   
+        temp_char=fgetc(fichier);
+        if(temp_char=='\n')    // incrementer le n si un saut de ligne est rencontre
+            n++;
+        if(feof(fichier))
+            break; 
+    }                        
+    Ptr_Joueur * liste_scores=malloc(n*sizeof(Ptr_Joueur));
+    n=0;
+    rewind(fichier);  // Reinitialisation du curseur
+    while(!feof(fichier))
+    {
+        fscanf(fichier,"%s %d",liste_scores[n]->nom,&liste_scores[n]->score);
+        n++;
+    }
+    /* on commence par trier les pointeurs par les scores associes */
+    for(i=0;i<n;i++)
+        for(j=i+1;j<n;j++)
+        {
+            if(liste_scores[i]->score < liste_scores[j]->score)  /* le tri s'effectue en decroissance */
+            {
+                Ptr_Joueur temp;
+                temp=liste_scores[i];                             /* on utilise un tri par selection */
+                liste_scores[i]=liste_scores[j];
+                liste_scores[j]=temp;
+                free(temp);  
+            }
+        }    
+    fclose(fichier);
+    printf("Les meilleures scores sont :\n");
+    if(n<9)
+    {
+        for(i=0;i<n;i++)
+        {
+            printf("%s %d\n",liste_scores[i]->nom,liste_scores[i]->score);
+        }
+    }
+    for(i=0;i<10;i++)
+        printf("%s %d \n",liste_scores[i]->nom,liste_scores[i]->score);
+    free(liste_scores);
+    
+}
