@@ -436,18 +436,16 @@ void enregistrer_le_gagnant(void)
     if(fichier==NULL)
         exit(1);
     if(Joueur1.score<Joueur2.score)
-        fprintf(fichier,"%s %d ",Joueur2.nom,Joueur2.score);
-        fprintf(fichier,"\n");    
+        fprintf(fichier,"%s %d ",Joueur2.nom,Joueur2.score);   
     if(Joueur2.score<Joueur1.score) 
         fprintf(fichier,"%s %d \n",Joueur1.nom,Joueur1.score);
-        fprintf(fichier,"\n");
     fclose(fichier);
 }
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* la fonction qui lit tous les meilleures scores et fait le tri des scores puis l'affichage des dix meilleures scores*/
 void Lire_trier_affi_scores(void)
 {
-    char name[40];
+    cchar name[40];
     int score;
     char temp_char; // un charactere temporaire pour calculer le nombre des lignes dans le fichier
     int n=0,i,j;
@@ -461,39 +459,45 @@ void Lire_trier_affi_scores(void)
             n++;
         if(feof(fichier))
             break; 
-    }                        
-    Ptr_Joueur * liste_scores=malloc(n*sizeof(Ptr_Joueur));
+    }  
+    printf("le nombre des lignes est :%d \n",n);                      
+    Joueur liste_scores[n];
+    rewind(fichier);   // Reinitialisation du curseur
     n=0;
-    rewind(fichier);  // Reinitialisation du curseur
     while(!feof(fichier))
     {
-        fscanf(fichier,"%s %d",liste_scores[n]->nom,&liste_scores[n]->score);
+        fscanf(fichier,"%s %d",liste_scores[n].nom,&(liste_scores[n].score));
         n++;
     }
+    printf("%d \n",n);
     /* on commence par trier les pointeurs par les scores associes */
     for(i=0;i<n-1;i++)
         for(j=i+1;j<n;j++)
         {
-            if(liste_scores[i]->score < liste_scores[j]->score)  /* le tri s'effectue en decroissance */
+            if(liste_scores[i].score < liste_scores[j].score)  /* le tri s'effectue en decroissance */
             {
-                Ptr_Joueur temp;
-                temp=liste_scores[i];                             /* on utilise un tri par selection */
-                liste_scores[i]=liste_scores[j];
-                liste_scores[j]=temp;
-                free(temp);  
+                char temp_char[40];
+                int temp_int;
+                temp_int=liste_scores[i].score;                             /* on utilise un tri par selection */
+                liste_scores[i].score=liste_scores[j].score;
+                liste_scores[j].score=temp_int;
+                strcpy(temp_char,liste_scores[i].nom);
+                strcpy(liste_scores[i].nom,liste_scores[j].nom);
+                strcpy(liste_scores[j].nom,temp_char);
             }
         }    
-    fclose(fichier);
     printf("Les meilleures scores sont :\n");
-    if(n<9)
+    if(n-1<9)
     {
-        for(i=0;i<n;i++)
+        for(i=0;i<n-1;i++)
         {
-            printf("%s %d\n",liste_scores[i]->nom,liste_scores[i]->score);
+            printf("%s %d \n",liste_scores[i].nom,liste_scores[i].score);
         }
     }
+    else {
     for(i=0;i<10;i++)
-        printf("%s %d \n",liste_scores[i]->nom,liste_scores[i]->score);
-    free(liste_scores);
+        printf("%s %d \n",liste_scores[i].nom,liste_scores[i].score);}
+    fclose(fichier);
     
 }
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
