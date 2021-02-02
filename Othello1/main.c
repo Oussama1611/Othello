@@ -8,16 +8,21 @@
 int main(void)
 {
     Table T;
-    int m;
+    int m=-1;
     int n;
     char coup=Blanc; 
-    printf("Tu veux continuer la partie en cours ? Entrer 1 si Oui , 0 si Non \n");
+    while(m!=0 && m!=1)
+    {
+    printf("Entrer votre choix : \n");
+    printf("0:[continuer la partie en cours]\n");
+    printf("1:[recommencer une nouvelle partie]\n");
     scanf("%d",&m);
+    }
     init_table(T);
-    if(m!=1)
+    if(m==1)
     {
         entrer_noms_joueurs();
-        enregistrer_noms_joueurs();
+        enregistrer_noms_joueurs();  
     }
     else
     {
@@ -29,6 +34,7 @@ int main(void)
         n=entrer_son_coup(T,coup);
         enregistrer_coups_joueurs(n);
         aff_table(T);
+        printf("NB: Pour l'historique des mouvements vous pouvez remonter en haut \n");
         if(rejouer_ou_non(T,inverse_coup(coup)))
             coup=inverse_coup(coup);
         else

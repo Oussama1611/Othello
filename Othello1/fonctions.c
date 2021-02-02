@@ -23,6 +23,10 @@ void enregistrer_noms_joueurs(void)
     int i;
     remove("partie_encours.txt");
     FILE *fichier=fopen("partie_encours.txt","w");
+    if(fichier==NULL)
+    {
+        exit(1);
+    }
     fprintf(fichier,"%s\n",Joueur1.nom);
     fprintf(fichier,"%s\n",Joueur2.nom);
     fclose(fichier);
@@ -664,3 +668,4 @@ void enregistrer_coups_joueurs(int k)
     fprintf(fichier,"%d\n",k);     /* on va ecrire les mouvements effectuees dans le fichier a partir du tableau Table_entiers */ 
     fclose(fichier); 
 }
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
