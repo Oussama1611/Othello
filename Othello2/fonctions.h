@@ -1,5 +1,5 @@
-#ifndef __othello1_h__
-#define __othello1_h__
+#ifndef __othello2_h__
+#define __othello2_h__
 
 
 
@@ -31,13 +31,11 @@ typedef struct _Joueur
     int score;
 }Joueur, * Ptr_Joueur;  /* le pointeur Joueur serve a voir quel nom de joueur on va ecrire dans l'affichage */ 
                 
-Joueur Joueur1,Joueur2; /* Declaration des structures des infos des joueurs  */
-
+Joueur Joueur1,Machine={"Machine",0}; /* Declaration des structures des infos du joueur  */
 
 
 /* Prototypes */
-void entrer_info_joueurs(void);
-Ptr_Joueur nom_a_afficher(char coup);
+void entrer_info_joueur(void);
 void init_table(Table T);
 void aff_table(Table T);
 Bool case_valide(int ligne,int colonne);
@@ -52,14 +50,14 @@ Bool valide_diagonale_bas_droit(Table T,int ligne,int colonne,char coup);
 Bool valide_diagonale_bas_gauche(Table T,int ligne,int colonne,char coup);
 Bool coup_valide(Table T,int ligne,int colonne,char coup);
 Bool rejouer_ou_non(Table T,char coup);
+int generer_nombre_aleatoire(void);
 int entrer_son_coup(Table T, char coup);
 Bool partie_terminee(Table T);
 void enregistrer_le_gagnant(void);
 void Lire_trier_affi_scores(void);
 void charger_partie_encours(Table T);
-void enregistrer_noms_joueurs(void);
-void enregistrer_coups_joueurs(int n);
-
+void enregistrer_nom_joueur(void);
+void enregistrer_coup_joueur(int n);
 
 
 
