@@ -71,5 +71,4 @@ void enregistrer_coups_joueurs(int n);
 
 
 
-
 #endif

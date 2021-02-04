@@ -223,7 +223,7 @@ Bool valide_diagonale_bas_gauche(Table T,int ligne,int colonne,char coup)
 /* defintion d'une fonction qui verifie si un coup est valide. Fonction qui rassemble toutes les fonctions predefinies ci-dessus */
 Bool coup_valide(Table T,int ligne,int colonne,char coup)
 {
-    if (!case_valide(ligne, colonne) || T[ligne][colonne] != EMPTY) return false;
+    if (!case_valide(ligne, colonne)) return false;
     if(valide_verticale_haut(T,ligne,colonne,coup) 
     || valide_verticale_bas(T,ligne,colonne,coup) 
     || valide_horizontale_droite(T,ligne,colonne,coup) 
@@ -245,7 +245,7 @@ Bool rejouer_ou_non(Table T,char coup)
     int i,j;
     for(i=0;i<D;i++)
         for(j=0;j<D;j++)
-           {if(coup_valide(T,i,j,coup)) // verification s'il existe un coup valide
+           {if(coup_valide(T,i,j,coup) && T[i][j]==EMPTY) // verification s'il existe un coup valide
                 return true;}
     return false;           
 }
@@ -321,7 +321,7 @@ int entrer_son_coup(Table T, char coup)         // l'entier k definit le nombre 
         j=colonne+1;
         while(case_valide(ligne,j) && T[ligne][j]==inverse_coup(coup)) 
             j++;
-        if(case_valide(i,j) && T[ligne][j]==coup)
+        if(case_valide(ligne,j) && T[ligne][j]==coup)
         {   j=colonne+1;
             while(T[ligne][j]==inverse_coup(coup))
             {
@@ -565,7 +565,7 @@ void charger_partie_encours(Table T)
             j=colonne+1;
             while(case_valide(ligne,j) && T[ligne][j]==inverse_coup(coup)) 
                 j++;
-            if(case_valide(i,j) && T[ligne][j]==coup)
+            if(case_valide(ligne,j) && T[ligne][j]==coup)
             {   j=colonne+1;
                 while(T[ligne][j]==inverse_coup(coup))
                 {
