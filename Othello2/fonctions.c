@@ -234,6 +234,232 @@ Bool rejouer_ou_non(Table T,char coup)
     return false;           
 }
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* fonction qui entre un coup pour predire le meilleur coup possible */
+/* NB: malheuresement autre fois on va reecrire les fonctions elementaires decrtites ci-dessous pour jouer un tour */
+void entrer_coup_posterieur(Table T,int ligne,int colonne ,char coup)
+{
+    int i,j;
+    if(coup_valide(T,ligne,colonne,coup))
+        T[ligne][colonne]=coup; 
+    if(valide_verticale_haut(T,ligne,colonne,coup)){
+        i=ligne-1;
+        while(case_valide(i,colonne) && T[i][colonne]==inverse_coup(coup)) 
+            i--;
+        if(case_valide(i,colonne) && T[i][colonne]==coup)
+        {   i=ligne-1;
+            while(T[i][colonne]==inverse_coup(coup))
+            {  
+                T[i][colonne]=coup;
+                i--;
+            } }    
+    }
+    if(valide_verticale_bas(T,ligne,colonne,coup)){
+        i=ligne+1;
+        while(case_valide(i,colonne) && T[i][colonne]==inverse_coup(coup)) 
+            i++;
+        if(case_valide(i,colonne) && T[i][colonne]==coup)
+       {    i=ligne+1;
+            while(T[i][colonne]==inverse_coup(coup))
+            {
+                T[i][colonne]=coup;
+                i++;
+            } }   
+    }        
+    if(valide_horizontale_droite(T,ligne,colonne,coup)) {
+        j=colonne+1;
+        while(case_valide(ligne,j) && T[ligne][j]==inverse_coup(coup)) 
+            j++;
+        if(case_valide(i,j) && T[ligne][j]==coup)
+        {   j=colonne+1;
+            while(T[ligne][j]==inverse_coup(coup))
+            {
+                T[ligne][j]=coup;
+                j++;
+            }  }
+    }
+    if(valide_horizontale_gauche(T,ligne,colonne,coup)) {
+        j=colonne-1;
+        while(case_valide(ligne,j) && T[ligne][j]==inverse_coup(coup)) 
+            j--;
+        if(case_valide(ligne,j) && T[ligne][j]==coup)
+        {   j=colonne-1;
+            while(T[ligne][j]==inverse_coup(coup))
+            {
+                T[ligne][j]=coup;
+                j--;
+            }  }     
+    }                 
+        
+    if(valide_diagonale_bas_droit(T,ligne,colonne,coup)) {
+        i=ligne+1;
+        j=colonne+1;
+        while(case_valide(i,j) && T[i][j]==inverse_coup(coup)) 
+        {   i++;
+            j++;
+        }
+        if(case_valide(i,j) && T[i][j]==coup)
+        {   i=ligne+1;
+            j=colonne+1;
+            while(T[i][j]==inverse_coup(coup))
+            {
+                T[i][j]=coup;
+                i++;
+                j++;
+            }  }              
+    }
+    if(valide_diagonale_bas_gauche(T,ligne,colonne,coup)) {
+        i=ligne+1;
+        j=colonne-1;
+        while(case_valide(i,j) && T[i][j]==inverse_coup(coup)) 
+        {   i++;
+            j--;
+        }
+        if(case_valide(i,j) && T[i][j]==coup)
+        {   i=ligne+1;
+            j=colonne-1;
+            while(T[i][j]==inverse_coup(coup))
+            {
+                T[i][j]=coup;
+                i++;
+                j--;
+            }  }
+    }            
+    if(valide_diagonale_haut_droit(T,ligne,colonne,coup)) {
+        i=ligne-1;
+        j=colonne+1;
+        while(case_valide(i,j) && T[i][j]==inverse_coup(coup)) 
+        {   i--;
+            j++;
+        }
+        if(case_valide(i,j) && T[i][j]==coup)
+        {   i=ligne-1;
+            j=colonne+1;
+            while(T[i][j]==inverse_coup(coup))
+            {
+                T[i][j]=coup;
+                i--;
+                j++;
+            } }
+    }              
+    if(valide_diagonale_haut_gauche(T,ligne,colonne,coup)) {
+        i=ligne-1;
+        j=colonne-1;
+        while(case_valide(i,j) && T[i][j]==inverse_coup(coup)) 
+        {   i--;
+            j--;
+        }
+        if(case_valide(i,j) && T[i][j]==coup)
+        {   i=ligne-1;
+            j=colonne-1;
+            while(T[i][j]==inverse_coup(coup))
+            {
+                T[i][j]=coup;
+                i--;
+                j--;
+            } }
+    }    
+}
+/*************************************************************************************/
+/*la fonction elementaire qui va evaluer le tableau dans chaque tour */
+int evaluate_table(Table T)
+{
+    int i,j;
+    int nb_noir=0;
+    int nb_blanc=0;
+    for(i=0;i<D;i++)
+        for(j=0;j<D;j++)
+            if(T[i][j]==Blanc) nb_blanc++;
+            else nb_noir++;  
+    return nb_noir-nb_blanc;          
+
+}
+/*************************************************************************************/
+/*la fonction MINMAX pour une longueur donnee */
+int minmax(Table T)
+{
+    int i,j,k,l,p,q,r,s,t,u,v,w,coup_optimal=0;
+    int m=0,n=0;
+    int score;
+    int cpt=0;
+    Bool boleen=false,boleen1=false;
+    Table Table_temp1,Table_temp2,Table_temp3;
+    for(i=0;i<D;i++)
+        for(j=0;j<D;j++)
+            {
+                Table_temp1[i][j]=T[i][j];
+            }
+    for(i=0;i<D;i++)
+    {   for(j=0;j<D;j++)
+        {
+            if(((i==0 && j==0) ||(i==7 && j==7)||(i==0 && j==7)||(i==7 && j==0)) && coup_valide(Table_temp1,i,j,Noir))   // amelioration par identification des cases definitives
+            {   
+                coup_optimal=(i+1)*10+(j+1);
+                boleen=true;
+                break;}
+            if(coup_valide(Table_temp1,i,j,Noir))
+            {   
+                entrer_coup_posterieur(Table_temp1,i,j,Noir);
+                for(k=0;k<D;k++)
+                    for(l=0;l<D;l++)
+                    {
+                        Table_temp2[k][l]=Table_temp1[k][l];
+                    }
+                for(k=0;k<D;k++)  
+                {   for(l=0;l<D;l++)
+                    {
+                        if(((k==0 && l==0) ||(k==7 && l==7)||(k==0 && l==7)||(k==7 && l==0)) && coup_valide(Table_temp2,k,l,Blanc) )
+                        {   boleen1=true;
+                            break;} 
+                        if(coup_valide(Table_temp2,k,l,Blanc))
+                        {  
+                            entrer_coup_posterieur(Table_temp2,k,l,Blanc);
+                            for(p=0;p<D;p++)
+                                for(q=0;q<D;q++)
+                                {
+                                    Table_temp3[p][q]=Table_temp2[p][q];
+                                }
+                            score=evaluate_table(Table_temp3);   
+                            for(p=0;p<D;p++)
+                                for(q=0;q<D;q++)
+                                {
+                                    if(coup_valide(Table_temp3,p,q,Noir))
+                                    {
+                                        entrer_coup_posterieur(Table_temp3,p,q,Noir);
+                                        if(evaluate_table(Table_temp3)>score)
+                                        {
+                                            score=evaluate_table(Table_temp3);
+                                            coup_optimal=(i+1)*10+(j+1);
+                                        }    
+                                    }
+                                    for(r=0;r<D;r++)
+                                        for(s=0;s<D;s++)
+                                        {
+                                            Table_temp3[r][s]=Table_temp2[r][s];
+                                        }
+                                        
+                                }
+                        }
+                        for(u=0;u<D;u++)
+                            for(t=0;t<D;t++)
+                            {
+                                Table_temp2[u][t]=Table_temp1[u][t];
+                            }       
+
+                    }
+                    if(boleen1)
+                        break;}
+            }
+            for(v=0;v<D;v++)
+                for(w=0;w<D;w++)
+                {
+                    Table_temp1[v][w]=T[v][w];
+                }               
+        }
+        if(boleen) break;
+    }
+    return coup_optimal;    
+}
+/*************************************************************************************/
 /* la fonction qui permet de generer un nombre aleatoire compris entre 0 et 88*/ 
 int generer_nombre_aleatoire(void)
 {
@@ -244,13 +470,14 @@ int generer_nombre_aleatoire(void)
 }
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* fonction permettant l'entree du coup de chaque joueur wt affichage de la grille */
-int entrer_son_coup(Table T, char coup)         // l'entier k definit le nombre des coups effectues
+int entrer_son_coup(Table T, char coup,int z)         // l'entier k definit le nombre des coups effectues
 {
     int n;
     int yes;     // pour la verification de recommencement de jeu 
     int i,j;     // un indice pour enregistrer les valeurs de n dans le table_entiers
     int ligne=0,colonne=0;
-    int EA;          // l'entier aleatoire genere
+    int EA;
+    int MINMAX;          // l'entier aleatoire genere
     if(coup==Blanc)
     {
     do 
@@ -287,15 +514,23 @@ int entrer_son_coup(Table T, char coup)         // l'entier k definit le nombre 
             colonne=n%10-1;
         }    
     }while(!(n>10 && n<90 && n%10!=0) || !coup_valide(T,ligne,colonne,coup));
-    }     
-    while(coup==Noir && !coup_valide(T,ligne,colonne,coup))
+    }
+    while(coup==Noir && !coup_valide(T,ligne,colonne,coup) && z==1) // si le pion noir a tour (machine) et le coup n'est pas valide on essaye d'avoir un coup aleatoire
     {
         EA=generer_nombre_aleatoire();
         ligne=floor(EA/10)-1;
         colonne=EA%10-1;
     }
-    if(coup==Noir)
+    if(coup==Noir && z==1)   //pour changer la valeur de n au cas ou la machine a son tour 
         n=EA;
+    if(coup==Noir && z==2)
+    {
+        MINMAX=minmax(T);
+        ligne=floor(MINMAX/10)-1;
+        colonne=MINMAX%10-1;
+    }
+    if(coup==Noir && z==2)
+        n=MINMAX;
     if(coup_valide(T,ligne,colonne,coup))
         T[ligne][colonne]=coup; 
     if(valide_verticale_haut(T,ligne,colonne,coup)){
