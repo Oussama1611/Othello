@@ -423,7 +423,7 @@ Bool partie_terminee(Table T)
             if(T[i][j]==EMPTY && (rejouer_ou_non(T,Noir) || rejouer_ou_non(T,Blanc) ))
                 return false;
             else if(T[i][j]==Blanc) nb_blanc++;
-                else nb_noir++;
+                else if(T[i][j]==Noir) nb_noir++;
     Joueur1.score=nb_blanc;
     Joueur2.score=nb_noir;
     printf("La patrie est terminee !! \n");

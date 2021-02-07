@@ -361,103 +361,76 @@ void entrer_coup_posterieur(Table T,int ligne,int colonne ,char coup)
 }
 /*************************************************************************************/
 /*la fonction elementaire qui va evaluer le tableau dans chaque tour */
-int evaluate_table(Table T)
+int evaluate_table(Table T ,char coup)
 {
     int i,j;
-    int nb_noir=0;
-    int nb_blanc=0;
+    int score=0;
     for(i=0;i<D;i++)
         for(j=0;j<D;j++)
-            if(T[i][j]==Blanc) nb_blanc++;
-            else nb_noir++;  
-    return nb_noir-nb_blanc;          
+            if(T[i][j]==coup) score+=Stragtegies_table[(i+1)*10+(j+1)];
+            else if(T[i][j]==inverse_coup(coup)) score-=Stragtegies_table[(i+1)*10+(j+1)];  
+    return score;          
 
 }
 /*************************************************************************************/
 /*la fonction MINMAX pour une longueur donnee */
-int minmax(Table T)
+int minmax(Table T,char coup,int longueur)
 {
-    int i,j,k,l,p,q,r,s,t,u,v,w,coup_optimal=0;
-    int m=0,n=0;
-    int score;
-    int cpt=0;
-    Bool boleen=false,boleen1=false;
-    Table Table_temp1,Table_temp2,Table_temp3;
+    int coups_possib[20];
+    int i,j,k=0,l;
+    int a,b;
+    int coup_meilleur=0;
+    int evaluat_meilleur=0;
+    int eval;
+    int coup_inverse;
+    Table table_temp1;
+    if(longueur==0)
+        return evaluate_table(T,coup);
     for(i=0;i<D;i++)
-        for(j=0;j<D;j++)
+        for(j=0;j<D;j++)   
+        {   if(coup_valide(T,i,j,coup))
             {
-                Table_temp1[i][j]=T[i][j];
+                coups_possib[k]=(i+1)*10+(j+1);
+                k++;
+            }}
+    coup_inverse=inverse_coup(coup);
+    if(coup==Noir)
+    {
+        for(l=0;l<k;l++)
+        {   
+            a=floor(coups_possib[l]/10);
+            b=coups_possib[l]%10 ;
+            for(i=0;i<D;i++)
+                for(j=0;j<D;j++)
+                    table_temp1[i][j]=T[i][j];
+            entrer_coup_posterieur(table_temp1,a,b,coup); 
+            eval=minmax(table_temp1,coup_inverse,longueur-1);
+            if(evaluat_meilleur==0 || eval>evaluat_meilleur)
+            {
+                coup_meilleur=coups_possib[l];
+                evaluat_meilleur=eval;
             }
-    for(i=0;i<D;i++)
-    {   for(j=0;j<D;j++)
-        {
-            if(((i==0 && j==0) ||(i==7 && j==7)||(i==0 && j==7)||(i==7 && j==0)) && coup_valide(Table_temp1,i,j,Noir))   // amelioration par identification des cases definitives
-            {   
-                coup_optimal=(i+1)*10+(j+1);
-                boleen=true;
-                break;}
-            if(coup_valide(Table_temp1,i,j,Noir))
-            {   
-                entrer_coup_posterieur(Table_temp1,i,j,Noir);
-                for(k=0;k<D;k++)
-                    for(l=0;l<D;l++)
-                    {
-                        Table_temp2[k][l]=Table_temp1[k][l];
-                    }
-                for(k=0;k<D;k++)  
-                {   for(l=0;l<D;l++)
-                    {
-                        if(((k==0 && l==0) ||(k==7 && l==7)||(k==0 && l==7)||(k==7 && l==0)) && coup_valide(Table_temp2,k,l,Blanc) )
-                        {   boleen1=true;
-                            break;} 
-                        if(coup_valide(Table_temp2,k,l,Blanc))
-                        {  
-                            entrer_coup_posterieur(Table_temp2,k,l,Blanc);
-                            for(p=0;p<D;p++)
-                                for(q=0;q<D;q++)
-                                {
-                                    Table_temp3[p][q]=Table_temp2[p][q];
-                                }
-                            score=evaluate_table(Table_temp3);   
-                            for(p=0;p<D;p++)
-                                for(q=0;q<D;q++)
-                                {
-                                    if(coup_valide(Table_temp3,p,q,Noir))
-                                    {
-                                        entrer_coup_posterieur(Table_temp3,p,q,Noir);
-                                        if(evaluate_table(Table_temp3)>score)
-                                        {
-                                            score=evaluate_table(Table_temp3);
-                                            coup_optimal=(i+1)*10+(j+1);
-                                        }    
-                                    }
-                                    for(r=0;r<D;r++)
-                                        for(s=0;s<D;s++)
-                                        {
-                                            Table_temp3[r][s]=Table_temp2[r][s];
-                                        }
-                                        
-                                }
-                        }
-                        for(u=0;u<D;u++)
-                            for(t=0;t<D;t++)
-                            {
-                                Table_temp2[u][t]=Table_temp1[u][t];
-                            }       
-
-                    }
-                    if(boleen1)
-                        break;}
-            }
-            for(v=0;v<D;v++)
-                for(w=0;w<D;w++)
-                {
-                    Table_temp1[v][w]=T[v][w];
-                }               
         }
-        if(boleen) break;
     }
-    return coup_optimal;    
+    if(coup==Blanc)
+    {
+        for(l=0;l<k;l++)
+        {   
+            a=floor(coups_possib[l]/10);
+            b=coups_possib[l]%10 ;
+            for(i=0;i<D;i++)
+                for(j=0;j<D;j++)
+                    table_temp1[i][j]=T[i][j];
+            entrer_coup_posterieur(table_temp1,a,b,coup); 
+            eval=minmax(table_temp1,coup_inverse,longueur-1);
+            if(evaluat_meilleur==0 || eval<evaluat_meilleur)
+            {
+                coup_meilleur=coups_possib[l];
+                evaluat_meilleur=eval;
+            }
+        }
+    }
+    return coup_meilleur;
 }
 /*************************************************************************************/
 /* la fonction qui permet de generer un nombre aleatoire compris entre 0 et 88*/ 
@@ -525,11 +498,17 @@ int entrer_son_coup(Table T, char coup,int z)         // l'entier k definit le n
         n=EA;
     if(coup==Noir && z==2)
     {
-        MINMAX=minmax(T);
+        MINMAX=minmax(T,Noir,5);
         ligne=floor(MINMAX/10)-1;
         colonne=MINMAX%10-1;
     }
-    if(coup==Noir && z==2)
+    if(coup==Noir && z==3)
+    {
+        MINMAX=minmax(T,Noir,7);
+        ligne=floor(MINMAX/10)-1;
+        colonne=MINMAX%10-1;
+    }
+    if(coup==Noir && (z==2 || z==3))
         n=MINMAX;
     if(coup_valide(T,ligne,colonne,coup))
         T[ligne][colonne]=coup; 
@@ -663,7 +642,7 @@ Bool partie_terminee(Table T)
             if(T[i][j]==EMPTY && (rejouer_ou_non(T,Noir) || rejouer_ou_non(T,Blanc) ))
                 return false;
             else if(T[i][j]==Blanc) nb_blanc++;
-                else nb_noir++;
+                else if(T[i][j]==Noir) nb_noir++;
     Joueur1.score=nb_blanc;
     Machine.score=nb_noir;
     printf("La patrie est terminee !! \n");

@@ -25,18 +25,16 @@ int main(void)
         entrer_nom_joueur();
         enregistrer_nom_joueur();
         printf("Choisir niveau de difficulte :\n");
-        printf("1:[easy]\n")  ;
-        printf("2:[medium]\n");
-        scanf("%d",&z);
     }
     else
     {
         charger_partie_encours(T);
         printf("Avec quelle difficulte vous voulez continuer :\n");
-        printf("1:[easy]\n")  ;
-        printf("2:[medium]\n");
-        scanf("%d",&z);
     }
+    printf("1:[easy]\n")  ;
+    printf("2:[medium]\n");
+    printf("3:[hard]\n");
+    scanf("%d",&z);
     aff_table(T);
     while(!partie_terminee(T))
     {
