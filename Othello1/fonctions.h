@@ -54,6 +54,7 @@ Bool coup_valide(Table T,int ligne,int colonne,char coup);
 Bool rejouer_ou_non(Table T,char coup);
 int entrer_son_coup(Table T, char coup);
 Bool partie_terminee(Table T);
+void sauvegarde_result(void);
 void enregistrer_le_gagnant(void);
 void Lire_trier_affi_scores(void);
 void charger_partie_encours(Table T);

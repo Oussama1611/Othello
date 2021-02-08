@@ -223,7 +223,7 @@ Bool valide_diagonale_bas_gauche(Table T,int ligne,int colonne,char coup)
 /* defintion d'une fonction qui verifie si un coup est valide. Fonction qui rassemble toutes les fonctions predefinies ci-dessus */
 Bool coup_valide(Table T,int ligne,int colonne,char coup)
 {
-    if (!case_valide(ligne, colonne)) return false;
+    if (!case_valide(ligne, colonne) || T[ligne][colonne]!=EMPTY) return false;
     if(valide_verticale_haut(T,ligne,colonne,coup) 
     || valide_verticale_bas(T,ligne,colonne,coup) 
     || valide_horizontale_droite(T,ligne,colonne,coup) 

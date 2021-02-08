@@ -67,6 +67,7 @@ int minmax(Table T,char coup,int longueur);
 int generer_nombre_aleatoire(void);
 int entrer_son_coup(Table T, char coup,int z);
 Bool partie_terminee(Table T);
+void sauvegarde_result(void);
 void enregistrer_le_gagnant(void);
 void Lire_trier_affi_scores(void);
 void charger_partie_encours(Table T);

@@ -723,15 +723,15 @@ void Lire_trier_affi_scores(void)
         }    
     printf("Les meilleures scores sont :\n");
     if(n-1<9)                                 // toujours une ligne est ajoutee lors de comptage donc on restreint une
-    {                                         // cette didjonction des cas est due a une eventuelle incmpletude de dix scores dans le fichier
+    {                                         // cette disjonction des cas est due a une eventuelle incompletude de dix scores dans le fichier
         for(i=0;i<n-1;i++)                                  
         {
-            printf("%s %d \n",liste_scores[i].nom,liste_scores[i].score);
+            printf("%s %d\n",liste_scores[i].nom,liste_scores[i].score);
         }
     }
     else {
     for(i=0;i<10;i++)
-        printf("%s %d \n",liste_scores[i].nom,liste_scores[i].score);}
+        printf("%s %d\n",liste_scores[i].nom,liste_scores[i].score);}
     fclose(fichier);
     
 }
