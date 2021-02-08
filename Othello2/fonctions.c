@@ -405,7 +405,7 @@ int minmax(Table T,char coup,int longueur)
                     table_temp1[i][j]=T[i][j];
             entrer_coup_posterieur(table_temp1,a,b,coup); 
             eval=minmax(table_temp1,coup_inverse,longueur-1);
-            if(evaluat_meilleur==0 || eval>evaluat_meilleur)
+            if(evaluat_meilleur==0 || eval<evaluat_meilleur)
             {
                 coup_meilleur=coups_possib[l];
                 evaluat_meilleur=eval;
@@ -423,7 +423,7 @@ int minmax(Table T,char coup,int longueur)
                     table_temp1[i][j]=T[i][j];
             entrer_coup_posterieur(table_temp1,a,b,coup); 
             eval=minmax(table_temp1,coup_inverse,longueur-1);
-            if(evaluat_meilleur==0 || eval<evaluat_meilleur)
+            if(evaluat_meilleur==0 || eval>evaluat_meilleur)
             {
                 coup_meilleur=coups_possib[l];
                 evaluat_meilleur=eval;
