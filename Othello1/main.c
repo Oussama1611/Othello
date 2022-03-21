@@ -4,7 +4,7 @@
 #include "fonctions.h"
 #include "fonctions.c"
 
-
+// main function
 int main(void)
 {
     Table T;
